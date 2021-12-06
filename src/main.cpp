@@ -19,7 +19,6 @@ int main() {
 		game.move(row, column);
 
 		const tic_tac_toe::Board& board = game.getBoard();
-		std::cout << board.getHeight() << ' ' << board.getHeight();
 		for(std::size_t i = 0; i < board.getHeight(); ++i) {
 			for(std::size_t j = 0; j < board.getWidth(); ++j) {
 				tic_tac_toe::CellState state = board[i][j].state;

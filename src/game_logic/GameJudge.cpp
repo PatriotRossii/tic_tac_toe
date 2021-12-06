@@ -28,12 +28,15 @@ bool GameJudge::checkDiagonals(std::size_t row, std::size_t column) {
 	IsSame<Board> isSame = IsSame<Board>{board};
 	bool flag = false;
 
+	int height = static_cast<int>(board.getHeight());
+	int width = static_cast<int>(board.getWidth());
+
 	{
 		std::vector<std::pair<std::size_t, std::size_t>> indeces;
-		for(std::size_t cRow = row, cColumn = column; cRow >= 0 && cColumn < board.getWidth(); --cRow, ++cColumn) {
+		for(int cRow = row, cColumn = column; cRow >= 0 && cColumn < width; --cRow, ++cColumn) {
 			indeces.emplace_back(cRow, cColumn);
 		}
-		for(std::size_t cRow = row + 1, cColumn = column - 1; cRow < board.getHeight() && cColumn >= 0; ++cRow, --cColumn) {
+		for(int cRow = row + 1, cColumn = column - 1; cRow < height && cColumn >= 0; ++cRow, --cColumn) {
 			indeces.emplace_back(cRow, cColumn);
 		}
 		if(indeces.size() != 1) {
@@ -43,10 +46,10 @@ bool GameJudge::checkDiagonals(std::size_t row, std::size_t column) {
 
 	{
 		std::vector<std::pair<std::size_t, std::size_t>> indeces;
-		for(std::size_t cRow = row, cColumn = column; cRow >= 0 && cColumn >= 0; --cRow, --cColumn) {
+		for(int cRow = row, cColumn = column; cRow >= 0 && cColumn >= 0; --cRow, --cColumn) {
 			indeces.emplace_back(cRow, cColumn);
 		}
-		for(std::size_t cRow = row + 1, cColumn = column + 1; cRow < board.getHeight() && cColumn < board.getWidth() ; ++cRow, ++cColumn) {
+		for(int cRow = row + 1, cColumn = column + 1; cRow < height && cColumn < width; ++cRow, ++cColumn) {
 			indeces.emplace_back(cRow, cColumn);
 		}
 		if(indeces.size() != 1) {
