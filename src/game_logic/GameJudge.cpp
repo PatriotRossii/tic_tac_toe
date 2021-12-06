@@ -5,27 +5,27 @@
 
 namespace tic_tac_toe {
 bool GameJudge::checkRow(std::size_t row) {
-	IsSame<Board> isSame = IsSame<Board>{board};
+	IsSame<Board> isSame = IsSame<Board>{};
 
 	std::vector<std::pair<std::size_t, std::size_t>> indeces;
 	for(std::size_t cRow = row, cColumn = 0; cColumn < board.getWidth(); ++cColumn) {
 		indeces.emplace_back(cRow, cColumn);
 	}
 
-	return isSame(indeces);
+	return isSame(accessFn, indeces);
 }
 bool GameJudge::checkColumn(std::size_t column) {
-	IsSame<Board> isSame = IsSame<Board>{board};
+	IsSame<Board> isSame = IsSame<Board>{};
 
 	std::vector<std::pair<std::size_t, std::size_t>> indeces;
 	for(std::size_t cColumn = column, cRow = 0; cRow < board.getHeight(); ++cRow) {
 		indeces.emplace_back(cRow, cColumn);
 	}
 
-	return isSame(indeces);
+	return isSame(accessFn, indeces);
 }
 bool GameJudge::checkDiagonals(std::size_t row, std::size_t column) {
-	IsSame<Board> isSame = IsSame<Board>{board};
+	IsSame<Board> isSame = IsSame<Board>{};
 	bool flag = false;
 
 	int height = static_cast<int>(board.getHeight());
@@ -40,7 +40,7 @@ bool GameJudge::checkDiagonals(std::size_t row, std::size_t column) {
 			indeces.emplace_back(cRow, cColumn);
 		}
 		if(indeces.size() != 1) {
-			flag = flag || isSame(indeces);
+			flag = flag || isSame(accessFn, indeces);
 		}
 	}
 
@@ -53,14 +53,14 @@ bool GameJudge::checkDiagonals(std::size_t row, std::size_t column) {
 			indeces.emplace_back(cRow, cColumn);
 		}
 		if(indeces.size() != 1) {
-			flag = flag || isSame(indeces);
+			flag = flag || isSame(accessFn, indeces);
 		}
 	}
 
 	return flag;
 }
 
-GameJudge::GameJudge(const Board& board_): board(board_) { }
+GameJudge::GameJudge(std::function<Cell(std::size_t, std::size_t)> fn): accessFn(fn) { }
 bool GameJudge::checkWin(std::size_t row, std::size_t column) {
 	return checkRow(row) || checkColumn(column) || checkDiagonals(row, column);
 }
