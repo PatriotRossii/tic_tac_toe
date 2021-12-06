@@ -7,6 +7,9 @@
 #include <thrift/transport/TServerSocket.h>
 #include <thrift/transport/TBufferTransports.h>
 
+#include "common/cell/Cell.hpp"
+#include "common/cell/CellState.hpp"
+
 using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;
 using namespace ::apache::thrift::transport;
@@ -24,14 +27,12 @@ class StorageServiceHandler : virtual public StorageServiceIf {
   }
 
   void setCell(const int64_t row, const int64_t column, const  ::CellState::type newState) {
-    // Your implementation goes here
-    printf("setCell\n");
+    board[row][column] = fromThrift(newState);
   }
 
   void getCell( ::Cell& _return, const int64_t row, const int64_t column) {
-    ::Cell retrievedCell;
-
-    _return = retrievedCell;
+    Cell retrievedCell = board[row][column];
+    _return = toThrift(retrievedCell);
   }
 
   int64_t getHeight() {
