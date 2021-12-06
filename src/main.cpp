@@ -2,6 +2,10 @@
 #include <vector>
 #include <tuple>
 
+#include "common/cell/CellState.hpp"
+#include "common/cell/Cell.hpp"
+#include "common/board/Board.hpp"
+
 namespace tic_tac_toe {
 enum class CurrentMove {
 	X,
@@ -12,50 +16,6 @@ enum class GameState {
 	OWin,
 	XWin,
 	Draw
-};
-enum class CellState {
-	Empty,
-	O,
-	X
-};
-struct Cell {
-	int row, column;
-	CellState state;
-
-	bool operator==(const Cell& other) const {
-		return this->state == other.state;
-	}
-	Cell& operator=(CellState newState) {
-		state = newState;
-		return *this;
-	}
-};
-class Board {
-	std::vector<std::vector<Cell>> board;
-public:
-	Board(int height, int width) {
-		board.reserve(height);
-		for(int i = 0; i < height; ++i) {
-			std::vector<Cell> row;
-			for(int j = 0; j < width; ++j) {
-				row.push_back(Cell{i, j, CellState::Empty});
-			}
-			board.push_back(std::move(row));
-		}
-	}
-	void setCell(int row, int column, CellState state) {
-		board[row][column] = state;
-	}
-	Cell getCell(int row, int column) const {
-		return board[row][column];
-	}
-
-	const std::vector<Cell>& operator[](std::size_t row) const {
-		return board[row];
-	}
-	std::vector<Cell>& operator[](std::size_t row) {
-		return board[row];
-	}
 };
 
 template<typename Container>
@@ -156,10 +116,10 @@ public:
 	}
 	void move(int row, int column) {
 		CellState newState = currentMove == CurrentMove::X ? CellState::X : CellState::O;
-		if(board.getCell(row, column).state != CellState::Empty) {
+		if(board[row][column].state != CellState::Empty) {
 			return;
 		}
-		board.setCell(row, column, newState);
+		board[row][column] = newState;
 		updateState(row, column);
 	}
 
@@ -186,7 +146,7 @@ int main() {
 		const tic_tac_toe::Board& board = game.getBoard();
 		for(int i = 0; i < tic_tac_toe::TicTacToe::HEIGHT; ++i) {
 			for(int j = 0; j < tic_tac_toe::TicTacToe::WIDTH; ++j) {
-				tic_tac_toe::CellState state = board.getCell(i, j).state;
+				tic_tac_toe::CellState state = board[i][j].state;
 				switch(state) {
 				case tic_tac_toe::CellState::X:
 					std::cout << 'X';
