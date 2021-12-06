@@ -7,32 +7,12 @@
 #include "common/board/Board.hpp"
 
 namespace tic_tac_toe {
-enum class CurrentMove {
-	X,
-	O
-};
 enum class GameState {
-	IDLE,
+	OMove,
+	XMove,
 	OWin,
 	XWin,
 	Draw
-};
-
-template<typename Container>
-struct IsSame {
-	const Container& container;
-public:
-	IsSame(const Container& container): container{container} { }
-	bool operator()(std::vector<std::pair<std::size_t, std::size_t>> indeces) const {
-		bool flag = true;
-
-		const auto& first = container[indeces[0].first][indeces[0].second];
-		for(std::size_t i = 1, size = indeces.size(); i < size; ++i) {
-			flag = flag && container[indeces[i].first][indeces[i].second] == first;
-		}
-
-		return flag;
-	}
 };
 
 class TicTacToe {
@@ -42,62 +22,6 @@ public:
 private:
 	Board board{HEIGHT, WIDTH};
 	GameState state{GameState::IDLE};
-	CurrentMove currentMove{CurrentMove::X};
-
-	bool checkRow(int row) {
-		IsSame<Board> isSame = IsSame<Board>{board};
-
-		std::vector<std::pair<std::size_t, std::size_t>> indeces;
-		for(int cRow = row, cColumn = 0; cColumn < WIDTH; ++cColumn) {
-			indeces.emplace_back(cRow, cColumn);
-		}
-
-		return isSame(indeces);
-	}
-
-	bool checkColumn(int column) {
-		IsSame<Board> isSame = IsSame<Board>{board};
-
-		std::vector<std::pair<std::size_t, std::size_t>> indeces;
-		for(int cColumn = column, cRow = 0; cRow < HEIGHT; ++cRow) {
-			indeces.emplace_back(cRow, cColumn);
-		}
-
-		return isSame(indeces);
-	}
-
-	bool checkDiagonals(int row, int column) {
-		IsSame<Board> isSame = IsSame<Board>{board};
-		bool flag = false;
-
-		{
-			std::vector<std::pair<std::size_t, std::size_t>> indeces;
-			for(int cRow = row, cColumn = column; cRow >= 0 && cColumn < WIDTH; --cRow, ++cColumn) {
-				indeces.emplace_back(cRow, cColumn);
-			}
-			for(int cRow = row + 1, cColumn = column - 1; cRow < HEIGHT && cColumn >= 0; ++cRow, --cColumn) {
-				indeces.emplace_back(cRow, cColumn);
-			}
-			if(indeces.size() != 1) {
-				flag = flag || isSame(indeces);
-			}
-		}
-
-		{
-			std::vector<std::pair<std::size_t, std::size_t>> indeces;
-			for(int cRow = row, cColumn = column; cRow >= 0 && cColumn >= 0; --cRow, --cColumn) {
-				indeces.emplace_back(cRow, cColumn);
-			}
-			for(int cRow = row + 1, cColumn = column + 1; cRow < HEIGHT && cColumn < WIDTH ; ++cRow, ++cColumn) {
-				indeces.emplace_back(cRow, cColumn);
-			}
-			if(indeces.size() != 1) {
-				flag = flag || isSame(indeces);
-			}
-		}
-
-		return flag;
-	}
 
 	void updateState(int row, int column) {
 		bool rowCheck = checkRow(row);
@@ -107,18 +31,19 @@ private:
 		bool win = rowCheck || columnCheck || diagonalsCheck;
 		if(win) {
 			state = currentMove == CurrentMove::X ? GameState::XWin : GameState::OWin;
+		} else {
+			state = state == GameState::XMove ? GameState::OMove : GameState::XMove;
 		}
-		currentMove = currentMove == CurrentMove::X ? CurrentMove::O : CurrentMove::X;
 	}
 public:
 	GameState getState() const {
 		return state;
 	}
 	void move(int row, int column) {
-		CellState newState = currentMove == CurrentMove::X ? CellState::X : CellState::O;
-		if(board[row][column].state != CellState::Empty) {
+		if(board[row][column].state != CellState::Empty || (state != GameState::XMove && state != GameState::OMove)) {
 			return;
 		}
+		CellState newState = state == GameState::XMove ? CellState::X : CellState::O;
 		board[row][column] = newState;
 		updateState(row, column);
 	}
