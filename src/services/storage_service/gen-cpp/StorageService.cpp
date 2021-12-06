@@ -9,6 +9,178 @@
 
 
 
+StorageService_setBoardSize_args::~StorageService_setBoardSize_args() noexcept {
+}
+
+
+uint32_t StorageService_setBoardSize_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->height);
+          this->__isset.height = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->width);
+          this->__isset.width = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t StorageService_setBoardSize_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("StorageService_setBoardSize_args");
+
+  xfer += oprot->writeFieldBegin("height", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64(this->height);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("width", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64(this->width);
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+StorageService_setBoardSize_pargs::~StorageService_setBoardSize_pargs() noexcept {
+}
+
+
+uint32_t StorageService_setBoardSize_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  ::apache::thrift::protocol::TOutputRecursionTracker tracker(*oprot);
+  xfer += oprot->writeStructBegin("StorageService_setBoardSize_pargs");
+
+  xfer += oprot->writeFieldBegin("height", ::apache::thrift::protocol::T_I64, 1);
+  xfer += oprot->writeI64((*(this->height)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldBegin("width", ::apache::thrift::protocol::T_I64, 2);
+  xfer += oprot->writeI64((*(this->width)));
+  xfer += oprot->writeFieldEnd();
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+StorageService_setBoardSize_result::~StorageService_setBoardSize_result() noexcept {
+}
+
+
+uint32_t StorageService_setBoardSize_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t StorageService_setBoardSize_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("StorageService_setBoardSize_result");
+
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+
+StorageService_setBoardSize_presult::~StorageService_setBoardSize_presult() noexcept {
+}
+
+
+uint32_t StorageService_setBoardSize_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  ::apache::thrift::protocol::TInputRecursionTracker tracker(*iprot);
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    xfer += iprot->skip(ftype);
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+
 StorageService_setCell_args::~StorageService_setCell_args() noexcept {
 }
 
@@ -733,6 +905,60 @@ uint32_t StorageService_getWidth_presult::read(::apache::thrift::protocol::TProt
   return xfer;
 }
 
+void StorageServiceClient::setBoardSize(const int64_t height, const int64_t width)
+{
+  send_setBoardSize(height, width);
+  recv_setBoardSize();
+}
+
+void StorageServiceClient::send_setBoardSize(const int64_t height, const int64_t width)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("setBoardSize", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  StorageService_setBoardSize_pargs args;
+  args.height = &height;
+  args.width = &width;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void StorageServiceClient::recv_setBoardSize()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("setBoardSize") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  StorageService_setBoardSize_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  return;
+}
+
 void StorageServiceClient::setCell(const int64_t row, const int64_t column, const  ::CellState::type newState)
 {
   send_setCell(row, column, newState);
@@ -980,6 +1206,59 @@ bool StorageServiceProcessor::dispatchCall(::apache::thrift::protocol::TProtocol
   return true;
 }
 
+void StorageServiceProcessor::process_setBoardSize(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (this->eventHandler_.get() != NULL) {
+    ctx = this->eventHandler_->getContext("StorageService.setBoardSize", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(this->eventHandler_.get(), ctx, "StorageService.setBoardSize");
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preRead(ctx, "StorageService.setBoardSize");
+  }
+
+  StorageService_setBoardSize_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postRead(ctx, "StorageService.setBoardSize", bytes);
+  }
+
+  StorageService_setBoardSize_result result;
+  try {
+    iface_->setBoardSize(args.height, args.width);
+  } catch (const std::exception& e) {
+    if (this->eventHandler_.get() != NULL) {
+      this->eventHandler_->handlerError(ctx, "StorageService.setBoardSize");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("setBoardSize", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->preWrite(ctx, "StorageService.setBoardSize");
+  }
+
+  oprot->writeMessageBegin("setBoardSize", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (this->eventHandler_.get() != NULL) {
+    this->eventHandler_->postWrite(ctx, "StorageService.setBoardSize", bytes);
+  }
+}
+
 void StorageServiceProcessor::process_setCell(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
   void* ctx = NULL;
@@ -1200,6 +1479,85 @@ void StorageServiceProcessor::process_getWidth(int32_t seqid, ::apache::thrift::
   ::std::shared_ptr< StorageServiceIf > handler(handlerFactory_->getHandler(connInfo), cleanup);
   ::std::shared_ptr< ::apache::thrift::TProcessor > processor(new StorageServiceProcessor(handler));
   return processor;
+}
+
+void StorageServiceConcurrentClient::setBoardSize(const int64_t height, const int64_t width)
+{
+  int32_t seqid = send_setBoardSize(height, width);
+  recv_setBoardSize(seqid);
+}
+
+int32_t StorageServiceConcurrentClient::send_setBoardSize(const int64_t height, const int64_t width)
+{
+  int32_t cseqid = this->sync_->generateSeqId();
+  ::apache::thrift::async::TConcurrentSendSentry sentry(this->sync_.get());
+  oprot_->writeMessageBegin("setBoardSize", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  StorageService_setBoardSize_pargs args;
+  args.height = &height;
+  args.width = &width;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+
+  sentry.commit();
+  return cseqid;
+}
+
+void StorageServiceConcurrentClient::recv_setBoardSize(const int32_t seqid)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  // the read mutex gets dropped and reacquired as part of waitForWork()
+  // The destructor of this sentry wakes up other clients
+  ::apache::thrift::async::TConcurrentRecvSentry sentry(this->sync_.get(), seqid);
+
+  while(true) {
+    if(!this->sync_->getPending(fname, mtype, rseqid)) {
+      iprot_->readMessageBegin(fname, mtype, rseqid);
+    }
+    if(seqid == rseqid) {
+      if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+        ::apache::thrift::TApplicationException x;
+        x.read(iprot_);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+        sentry.commit();
+        throw x;
+      }
+      if (mtype != ::apache::thrift::protocol::T_REPLY) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+      }
+      if (fname.compare("setBoardSize") != 0) {
+        iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+        iprot_->readMessageEnd();
+        iprot_->getTransport()->readEnd();
+
+        // in a bad state, don't commit
+        using ::apache::thrift::protocol::TProtocolException;
+        throw TProtocolException(TProtocolException::INVALID_DATA);
+      }
+      StorageService_setBoardSize_presult result;
+      result.read(iprot_);
+      iprot_->readMessageEnd();
+      iprot_->getTransport()->readEnd();
+
+      sentry.commit();
+      return;
+    }
+    // seqid != rseqid
+    this->sync_->updatePending(fname, mtype, rseqid);
+
+    // this will temporarily unlock the readMutex, and let other clients get work done
+    this->sync_->waitForWork(seqid);
+  } // end while(true)
 }
 
 void StorageServiceConcurrentClient::setCell(const int64_t row, const int64_t column, const  ::CellState::type newState)

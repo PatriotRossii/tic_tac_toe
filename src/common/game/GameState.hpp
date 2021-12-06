@@ -8,4 +8,6 @@ enum class GameState {
 	XWin,
 	Draw
 };
+GameState fromThrift(::GameState::type);
+::GameState::type toThrift(GameState);
 }

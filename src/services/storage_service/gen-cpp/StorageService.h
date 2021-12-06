@@ -22,6 +22,7 @@
 class StorageServiceIf {
  public:
   virtual ~StorageServiceIf() {}
+  virtual void setBoardSize(const int64_t height, const int64_t width) = 0;
   virtual void setCell(const int64_t row, const int64_t column, const  ::CellState::type newState) = 0;
   virtual void getCell( ::Cell& _return, const int64_t row, const int64_t column) = 0;
   virtual int64_t getHeight() = 0;
@@ -55,6 +56,9 @@ class StorageServiceIfSingletonFactory : virtual public StorageServiceIfFactory 
 class StorageServiceNull : virtual public StorageServiceIf {
  public:
   virtual ~StorageServiceNull() {}
+  void setBoardSize(const int64_t /* height */, const int64_t /* width */) {
+    return;
+  }
   void setCell(const int64_t /* row */, const int64_t /* column */, const  ::CellState::type /* newState */) {
     return;
   }
@@ -69,6 +73,99 @@ class StorageServiceNull : virtual public StorageServiceIf {
     int64_t _return = 0;
     return _return;
   }
+};
+
+typedef struct _StorageService_setBoardSize_args__isset {
+  _StorageService_setBoardSize_args__isset() : height(false), width(false) {}
+  bool height :1;
+  bool width :1;
+} _StorageService_setBoardSize_args__isset;
+
+class StorageService_setBoardSize_args {
+ public:
+
+  StorageService_setBoardSize_args(const StorageService_setBoardSize_args&);
+  StorageService_setBoardSize_args& operator=(const StorageService_setBoardSize_args&);
+  StorageService_setBoardSize_args() : height(0), width(0) {
+  }
+
+  virtual ~StorageService_setBoardSize_args() noexcept;
+  int64_t height;
+  int64_t width;
+
+  _StorageService_setBoardSize_args__isset __isset;
+
+  void __set_height(const int64_t val);
+
+  void __set_width(const int64_t val);
+
+  bool operator == (const StorageService_setBoardSize_args & rhs) const
+  {
+    if (!(height == rhs.height))
+      return false;
+    if (!(width == rhs.width))
+      return false;
+    return true;
+  }
+  bool operator != (const StorageService_setBoardSize_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const StorageService_setBoardSize_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class StorageService_setBoardSize_pargs {
+ public:
+
+
+  virtual ~StorageService_setBoardSize_pargs() noexcept;
+  const int64_t* height;
+  const int64_t* width;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class StorageService_setBoardSize_result {
+ public:
+
+  StorageService_setBoardSize_result(const StorageService_setBoardSize_result&);
+  StorageService_setBoardSize_result& operator=(const StorageService_setBoardSize_result&);
+  StorageService_setBoardSize_result() {
+  }
+
+  virtual ~StorageService_setBoardSize_result() noexcept;
+
+  bool operator == (const StorageService_setBoardSize_result & /* rhs */) const
+  {
+    return true;
+  }
+  bool operator != (const StorageService_setBoardSize_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const StorageService_setBoardSize_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class StorageService_setBoardSize_presult {
+ public:
+
+
+  virtual ~StorageService_setBoardSize_presult() noexcept;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
 };
 
 typedef struct _StorageService_setCell_args__isset {
@@ -491,6 +588,9 @@ class StorageServiceClient : virtual public StorageServiceIf {
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
+  void setBoardSize(const int64_t height, const int64_t width);
+  void send_setBoardSize(const int64_t height, const int64_t width);
+  void recv_setBoardSize();
   void setCell(const int64_t row, const int64_t column, const  ::CellState::type newState);
   void send_setCell(const int64_t row, const int64_t column, const  ::CellState::type newState);
   void recv_setCell();
@@ -518,6 +618,7 @@ class StorageServiceProcessor : public ::apache::thrift::TDispatchProcessor {
   typedef  void (StorageServiceProcessor::*ProcessFunction)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*);
   typedef std::map<std::string, ProcessFunction> ProcessMap;
   ProcessMap processMap_;
+  void process_setBoardSize(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_setCell(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getCell(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_getHeight(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
@@ -525,6 +626,7 @@ class StorageServiceProcessor : public ::apache::thrift::TDispatchProcessor {
  public:
   StorageServiceProcessor(::std::shared_ptr<StorageServiceIf> iface) :
     iface_(iface) {
+    processMap_["setBoardSize"] = &StorageServiceProcessor::process_setBoardSize;
     processMap_["setCell"] = &StorageServiceProcessor::process_setCell;
     processMap_["getCell"] = &StorageServiceProcessor::process_getCell;
     processMap_["getHeight"] = &StorageServiceProcessor::process_getHeight;
@@ -557,6 +659,15 @@ class StorageServiceMultiface : virtual public StorageServiceIf {
     ifaces_.push_back(iface);
   }
  public:
+  void setBoardSize(const int64_t height, const int64_t width) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->setBoardSize(height, width);
+    }
+    ifaces_[i]->setBoardSize(height, width);
+  }
+
   void setCell(const int64_t row, const int64_t column, const  ::CellState::type newState) {
     size_t sz = ifaces_.size();
     size_t i = 0;
@@ -626,6 +737,9 @@ class StorageServiceConcurrentClient : virtual public StorageServiceIf {
   std::shared_ptr< ::apache::thrift::protocol::TProtocol> getOutputProtocol() {
     return poprot_;
   }
+  void setBoardSize(const int64_t height, const int64_t width);
+  int32_t send_setBoardSize(const int64_t height, const int64_t width);
+  void recv_setBoardSize(const int32_t seqid);
   void setCell(const int64_t row, const int64_t column, const  ::CellState::type newState);
   int32_t send_setCell(const int64_t row, const int64_t column, const  ::CellState::type newState);
   void recv_setCell(const int32_t seqid);

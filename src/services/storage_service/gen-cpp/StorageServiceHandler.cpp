@@ -13,9 +13,14 @@ using namespace ::apache::thrift::transport;
 using namespace ::apache::thrift::server;
 
 class StorageServiceHandler : virtual public StorageServiceIf {
+ Board board;
  public:
   StorageServiceHandler() {
     // Your initialization goes here
+  }
+
+  void setBoardSize(const int64_t height, const int64_t width) {
+    board.setBoardSize(height, width);
   }
 
   void setCell(const int64_t row, const int64_t column, const  ::CellState::type newState) {
@@ -24,18 +29,17 @@ class StorageServiceHandler : virtual public StorageServiceIf {
   }
 
   void getCell( ::Cell& _return, const int64_t row, const int64_t column) {
-    // Your implementation goes here
-    printf("getCell\n");
+    ::Cell retrievedCell;
+
+    _return = retrievedCell;
   }
 
   int64_t getHeight() {
-    // Your implementation goes here
-    printf("getHeight\n");
+    return board.getHeight();
   }
 
   int64_t getWidth() {
-    // Your implementation goes here
-    printf("getWidth\n");
+    return board.getWidth();
   }
 
 };

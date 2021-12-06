@@ -1,7 +1,11 @@
 #include "Board.hpp"
 
 namespace tic_tac_toe {
-Board::Board(std::size_t height_, std::size_t width_): height{height_}, width{width_} {
+void Board::initialize(std::size_t height, std::size_t width) {
+	this->height = height;
+	this->width = width;
+	board.clear();
+
 	board.reserve(height);
 	for(std::size_t i = 0; i < height; ++i) {
 		std::vector<Cell> row;
@@ -10,6 +14,13 @@ Board::Board(std::size_t height_, std::size_t width_): height{height_}, width{wi
 		}
 		board.push_back(std::move(row));
 	}
+}
+
+Board::Board(std::size_t height, std::size_t width) {
+	this->initialize(height, width);
+}
+void Board::setBoardSize(std::size_t height, std::size_t width) {
+	this->initialize(height, width);
 }
 
 const std::vector<Cell>& Board::operator[](std::size_t row) const {
