@@ -3,9 +3,9 @@
 namespace tic_tac_toe {
 Board::Board(std::size_t height, std::size_t width): height{height}, width{width} {
 	board.reserve(height);
-	for(int i = 0; i < height; ++i) {
+	for(std::size_t i = 0; i < height; ++i) {
 		std::vector<Cell> row;
-		for(int j = 0; j < width; ++j) {
+		for(std::size_t j = 0; j < width; ++j) {
 			row.push_back(Cell{i, j, CellState::Empty});
 		}
 		board.push_back(std::move(row));

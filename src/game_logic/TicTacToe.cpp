@@ -1,4 +1,4 @@
-#include "GameJudge.hpp"
+#include "TicTacToe.hpp"
 
 namespace tic_tac_toe {
 void TicTacToe::updateState(std::size_t row, std::size_t column) {
@@ -14,7 +14,7 @@ void TicTacToe::updateState(std::size_t row, std::size_t column) {
 TicTacToe::TicTacToe(std::size_t height, std::size_t width):
 	board{height, width}, judge{board} { }
 void TicTacToe::move(std::size_t row, std::size_t column) {
-	if(board[row][column].state != CellState::Empty || (state != GameState::XMove && state != GameState::OMove)) {
+	if(board[row][column].state != CellState::Empty || isGameEnd()) {
 		return;
 	}
 	CellState newState = state == GameState::XMove ? CellState::X : CellState::O;
@@ -26,5 +26,9 @@ GameState TicTacToe::getState() const {
 }
 const Board& TicTacToe::getBoard() const {
 	return board;
+}
+
+bool TicTacToe::isGameEnd() const {
+	return (state == GameState::XWin || state == GameState::OWin || state == GameState::Draw);
 }
 }

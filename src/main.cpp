@@ -6,22 +6,22 @@
 #include "game_logic/TicTacToe.hpp"
 
 int main() {
-	tic_tac_toe::TicTacToe game;
-	while(game.getState() == tic_tac_toe::GameState::IDLE) {
+	tic_tac_toe::TicTacToe game{3, 3};
+	while(!game.isGameEnd()) {
 		int row, column;
 
 		std::cout << "Row: ";
 		std::cin >> row;
 		std::cout << "Column: ";
 		std::cin >> column;
-
 		std::cout << std::endl;
 
 		game.move(row, column);
 
 		const tic_tac_toe::Board& board = game.getBoard();
-		for(int i = 0; i < tic_tac_toe::TicTacToe::HEIGHT; ++i) {
-			for(int j = 0; j < tic_tac_toe::TicTacToe::WIDTH; ++j) {
+		std::cout << board.getHeight() << ' ' << board.getHeight();
+		for(std::size_t i = 0; i < board.getHeight(); ++i) {
+			for(std::size_t j = 0; j < board.getWidth(); ++j) {
 				tic_tac_toe::CellState state = board[i][j].state;
 				switch(state) {
 				case tic_tac_toe::CellState::X:

@@ -1,7 +1,6 @@
-#pragma once
-
 #include <vector>
 
+#include "GameJudge.hpp"
 #include "../utility/IsSame.hpp"
 
 namespace tic_tac_toe {

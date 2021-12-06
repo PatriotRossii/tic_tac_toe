@@ -1,10 +1,12 @@
 #pragma once
 
+#include <cstddef>
+
 #include "CellState.hpp"
 
 namespace tic_tac_toe {
 struct Cell {
-	int row, column;
+	std::size_t row, column;
 	CellState state;
 
 	Cell& operator=(CellState newState);
