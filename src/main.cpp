@@ -1,58 +1,9 @@
 #include <iostream>
-#include <vector>
-#include <tuple>
 
 #include "common/cell/CellState.hpp"
-#include "common/cell/Cell.hpp"
-#include "common/board/Board.hpp"
+#include "common/game/GameState.hpp"
 
-namespace tic_tac_toe {
-enum class GameState {
-	OMove,
-	XMove,
-	OWin,
-	XWin,
-	Draw
-};
-
-class TicTacToe {
-public:
-	static const int HEIGHT = 3;
-	static const int WIDTH = 3;
-private:
-	Board board{HEIGHT, WIDTH};
-	GameState state{GameState::IDLE};
-
-	void updateState(int row, int column) {
-		bool rowCheck = checkRow(row);
-		bool columnCheck = checkColumn(column);
-		bool diagonalsCheck = checkDiagonals(row, column);
-
-		bool win = rowCheck || columnCheck || diagonalsCheck;
-		if(win) {
-			state = currentMove == CurrentMove::X ? GameState::XWin : GameState::OWin;
-		} else {
-			state = state == GameState::XMove ? GameState::OMove : GameState::XMove;
-		}
-	}
-public:
-	GameState getState() const {
-		return state;
-	}
-	void move(int row, int column) {
-		if(board[row][column].state != CellState::Empty || (state != GameState::XMove && state != GameState::OMove)) {
-			return;
-		}
-		CellState newState = state == GameState::XMove ? CellState::X : CellState::O;
-		board[row][column] = newState;
-		updateState(row, column);
-	}
-
-	const Board& getBoard() const {
-		return board;
-	}
-};
-}
+#include "game_logic/TicTacToe.hpp"
 
 int main() {
 	tic_tac_toe::TicTacToe game;

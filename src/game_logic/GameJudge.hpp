@@ -10,6 +10,7 @@ private:
 	bool checkColumn(std::size_t column);
 	bool checkDiagonals(std::size_t row, std::size_t column);
 public:
+	GameJudge(const Board& board);
 	bool checkWin(std::size_t row, std::size_t column);
 };
 }

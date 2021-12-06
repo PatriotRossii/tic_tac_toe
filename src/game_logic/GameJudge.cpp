@@ -58,6 +58,7 @@ bool GameJudge::checkDiagonals(std::size_t row, std::size_t column) {
 	return flag;
 }
 
+GameJudge::GameJudge(const Board& board_): board(board_) { }
 bool GameJudge::checkWin(std::size_t row, std::size_t column) {
 	return checkRow(row) || checkColumn(column) || checkDiagonals(row, column);
 }
