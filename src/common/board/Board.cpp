@@ -1,7 +1,7 @@
 #include "Board.hpp"
 
 namespace tic_tac_toe {
-Board::Board(int height, int width) {
+Board::Board(std::size_t height, std::size_t width): height{height}, width{width} {
 	board.reserve(height);
 	for(int i = 0; i < height; ++i) {
 		std::vector<Cell> row;
@@ -17,5 +17,12 @@ const std::vector<Cell>& Board::operator[](std::size_t row) const {
 }
 std::vector<Cell>& Board::operator[](std::size_t row) {
 	return board[row];
+}
+
+std::size_t Board::getHeight() const {
+	return height;
+}
+std::size_t Board::getWidth() const {
+	return width;
 }
 }
