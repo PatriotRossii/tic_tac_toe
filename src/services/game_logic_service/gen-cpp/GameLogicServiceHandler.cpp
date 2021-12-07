@@ -7,15 +7,20 @@
 #include <thrift/transport/TServerSocket.h>
 #include <thrift/transport/TBufferTransports.h>
 
+#include "services/storage_service/gen-cpp/StorageService.h"
+#include "game_logic/GameJudge.hpp"
+#include "config.hpp"
+
 using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;
 using namespace ::apache::thrift::transport;
 using namespace ::apache::thrift::server;
 
 class GameLogicServiceHandler : virtual public GameLogicServiceIf {
+ GameJudge judge;
  public:
-  GameLogicServiceHandler() {
-    // Your initialization goes here
+  GameLogicServiceHandler()
+  {
   }
 
   void move(const int64_t row, const int64_t column) {
